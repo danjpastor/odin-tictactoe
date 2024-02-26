@@ -29,10 +29,9 @@ function Gameboard() {
 }
 
 const Game = (function () {
-    let turn = 0;
+    let activePlayer = null;
     let winner = null;
     let gameOver = false;
-
 
     const createPlayers = function (playerOneName, playerTwoName) {
         const playerOne = Player(playerOneName)
@@ -43,6 +42,23 @@ const Game = (function () {
         return [playerOne, playerTwo];
     }
 
+    const changePlayer = function (players) {
+        if (activePlayer == players[0]) {
+            activePlayer = players[1];
+        } else if (activePlayer == players[1]) {
+            activePlayer = players[0];
+        } else {
+            activePlayer = players[0];
+        }
+        console.log(`It is time for ${activePlayer.name}'s Move!`)
+
+    }
+
+    const getActivePlayer = function () {
+        console.log(activePlayer.name)
+        return activePlayer.name
+    }
+
     const playGame = function () {
         // const playerOneName = prompt("What is the name of Player One?");
         // const playerTwoName = prompt("What is Player Two's Name")
@@ -51,6 +67,7 @@ const Game = (function () {
 
         let gameboard = Gameboard()
         console.log(gameboard.printBoard())
+        changePlayer(players)
     }
 
     return {
