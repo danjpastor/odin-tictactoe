@@ -44,12 +44,9 @@ function Gameboard() {
     }
 }
 
-function visualController(players, gameboard) {
-    const scoreboard = document.querySelector('#scoreboard')
+function visualController(players, gameboard, score) {
     const playerOneScore = document.querySelector('.playerOneScore')
     const playerTwoScore = document.querySelector('.playerTwoScore')
-    
-    let score = [0, 0];
 
     const updateScore = function (players) {
         let winner = Game.getWinner()
@@ -76,10 +73,15 @@ function visualController(players, gameboard) {
         playerTwoName.querySelector('h2').textContent = players[1].name
     }
 
-    const updateStatus = function (players, activePlayer) {
+    const updateStatus = function (players, activePlayer, gameboard) {
         const statusBox = document.querySelector('.status');
+        const board = gameboard.getBoard();
 
-        if (!activePlayer) {
+        if (!board.includes('') && !Game.getWinner()) {
+            statusBox.textContent = `It's a Tie!`
+        }
+
+        if (!activePlayer && board.includes('')) {
             statusBox.textContent = "Let's Play!"
         } else if (activePlayer && !Game.getWinner()){
             statusBox.textContent = `${activePlayer.name}'s Turn`
@@ -99,9 +101,12 @@ const Game = (function () {
     let activePlayer = null;
     let winner = null;
     let gameOver = false;
+    let score = [0, 0];
 
     const gameboardDiv = document.querySelector('#gameboard');
-    const reset = document.querySelector("button")
+    const reset = document.querySelector("button.reset")
+    const play = document.querySelector(".newGame")
+    const container = document.querySelector(".container")
 
     const createPlayers = function (playerOneName, playerTwoName) {
 
@@ -158,7 +163,7 @@ const Game = (function () {
     };
 
     const newGame = function (players, gameboard, visuals) {
-
+        reset.classList.add('hidden')
         console.clear()
         winner = null;
 
@@ -166,7 +171,7 @@ const Game = (function () {
         gameboard.printBoard()
         gameboardDiv.textContent = '';
         activePlayer = players[0]
-        visuals.updateStatus(players, activePlayer)
+        visuals.updateStatus(players, activePlayer, gameboard)
         createBoard(players, gameboard, visuals)
         gameOver = false;
     }
@@ -181,14 +186,17 @@ const Game = (function () {
                 gameOver = true;
                 console.log(`Congratulations! ${winner.name} wins!`);
                 visuals.updateScore(players)
+                reset.classList.remove('hidden')
             }
         }
         // Check for tie
         if (!board.includes('') && !winner) {
+            activePlayer = null;
             gameOver = true;
             console.log("It's a tie!");
+            reset.classList.remove('hidden')
         }
-        visuals.updateStatus(players, activePlayer)
+        visuals.updateStatus(players, activePlayer, gameboard)
         return winner;
     }
     
@@ -216,21 +224,26 @@ const Game = (function () {
     }
 
     const playGame = function () {
-        // const playerOneName = prompt("What is the name of Player One?", "Mr. X");
-        // const playerTwoName = prompt("What is Player Two's Name", "Ms. O")
-        let playerOneName = null;
-        let playerTwoName = null;
+        play.addEventListener('click', function(e) {
+            container.classList.remove("hidden")
+            play.classList.add("hidden")
 
-        let players = createPlayers(playerOneName, playerTwoName);
-        console.log(`Welcome ${players[0].name} and ${players[1].name}`)
+            // const playerOneName = prompt("What is the name of Player One?", "Mr. X");
+            // const playerTwoName = prompt("What is Player Two's Name", "Ms. O")
+            let playerOneName = null;
+            let playerTwoName = null;
 
-        let gameboard = Gameboard()
-        let visuals = visualController(players, gameboard)
-        cells = createBoard(players, gameboard, visuals)
-        visuals.displayPlayers(players)
+            let players = createPlayers(playerOneName, playerTwoName);
+            console.log(`Welcome ${players[0].name} and ${players[1].name}`)
 
-        reset.addEventListener('click', function(e) {
-            newGame(players, gameboard, visuals)
+            let gameboard = Gameboard()
+            let visuals = visualController(players, gameboard, score)
+            cells = createBoard(players, gameboard, visuals)
+            visuals.displayPlayers(players)
+
+            reset.addEventListener('click', function(e) {
+                newGame(players, gameboard, visuals)
+            })
         })
     }
 

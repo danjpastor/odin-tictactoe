@@ -5,36 +5,43 @@
     <title>Odin - Tic Tac Toe</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content="" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" /> 
     <script src="javascript.js" defer></script>
 </head>
 <body>
-    <div class="container">
+    <div class="logo">
+        <h1>Tic-Tac-Toe</h1>
+    </div>
+    <div class="child">
+        <button type="submit" class="newGame">Play Game</button>
+    </div>
+    <div id="main" class="container hidden">
         <div id="gameboard">
         </div>
-        <div id="scoreboard">
-            <div class="child">
-                <div class="playerOneScore">
-                    <div class="playerOneName">
-                        <h2></h2>
+        <div class="rightPane">
+            <div id="scoreboard">
+                <div class="child">
+                    <div class="playerOneScore">
+                        <div class="playerOneName">
+                            <h2></h2>
+                        </div>
+                        <h2 class="score">0</h2>
                     </div>
-                    <h2 class="score">0</h2>
+                </div>
+                <div class="child">
+                    <h2 class="status">Let's Play!</h2>
+                </div>
+                <div class="child">
+                    <div class="playerTwoScore">
+                        <div class="playerTwoName">
+                            <h2></h2>
+                        </div>
+                        <h2 class="score">0</h2>
+                    </div>
                 </div>
             </div>
-            <div class="child">
-                <h2 class="status">Let's Play!</h2>
-            </div>
-            <div class="child">
-                <div class="playerTwoScore">
-                    <div class="playerTwoName">
-                        <h2></h2>
-                    </div>
-                    <h2 class="score">0</h2>
-                </div>
-            </div>
-        </div>
-        <div class="child">
-            <button>New Game</button>
+
+                <button class="reset hidden">Reset Game</button>
         </div>
     </div>
         </div>
