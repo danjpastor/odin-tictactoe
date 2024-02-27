@@ -91,6 +91,14 @@ const Game = (function () {
     const reset = document.querySelector("button")
 
     const createPlayers = function (playerOneName, playerTwoName) {
+
+        if (!playerOneName) {
+            playerOneName = "Mr. X"
+        }
+        if (!playerTwoName) {
+            playerTwoName = "Ms. O"
+        }
+
         const playerOne = Player(playerOneName)
         const playerTwo = Player(playerTwoName)
         playerOne.shape = "X";
@@ -122,7 +130,7 @@ const Game = (function () {
         return activePlayer.shape;
     };
 
-    const updateCell = function(index, players, gameboard) {
+    const updateCell = function(index, players, gameboard, visuals) {
         // Check if the cell is already filled
         if (!gameboardDiv.children[index].textContent.trim() && gameOver == false) {
             // Get the active player's shape and update the cell
@@ -132,26 +140,24 @@ const Game = (function () {
             gameboard.printBoard()
 
             changePlayer(players)
-            checkWinner(players, gameboard) 
+            checkWinner(players, gameboard, visuals) 
         }
     };
 
     const newGame = function (players, gameboard, visuals) {
 
         console.clear()
-
-        visuals.updateScore(players, gameboard)
         winner = null;
 
         gameboard.resetBoard()
         gameboard.printBoard()
         gameboardDiv.textContent = '';
         activePlayer = players[0]
-        createBoard(players, gameboard)
+        createBoard(players, gameboard, visuals)
         gameOver = false;
     }
 
-    const checkWinner = function(players, gameboard) {
+    const checkWinner = function(players, gameboard, visuals) {
         const board = gameboard.getBoard();
         for (let condition of gameboard.getWinningCondition()) {
             const [a, b, c] = condition;
@@ -160,6 +166,7 @@ const Game = (function () {
                 winner = board[a] === players[0].shape ? players[0] : players[1];
                 gameOver = true;
                 console.log(`Congratulations! ${winner.name} wins!`);
+                visuals.updateScore(players)
             }
         }
         // Check for tie
@@ -170,7 +177,7 @@ const Game = (function () {
         return winner;
     }
     
-    const createBoard = function (players, gameboard) {
+    const createBoard = function (players, gameboard, visuals) {
 
         for (i = 0; i < 9; i++){
             const cell = document.createElement('div');
@@ -186,7 +193,7 @@ const Game = (function () {
             cells.forEach((cell, index) => {
                 cell.addEventListener('click', function (event) {
                     // Call a function to update the cell with player's shape
-                    updateCell(index, players, gameboard); // Pass index as an argument
+                    updateCell(index, players, gameboard, visuals); // Pass index as an argument
                 });
             });
         };
@@ -194,15 +201,17 @@ const Game = (function () {
     }
 
     const playGame = function () {
-        // const playerOneName = prompt("What is the name of Player One?");
-        // const playerTwoName = prompt("What is Player Two's Name")
-        let players = createPlayers("Bob", "Linda");
+        // const playerOneName = prompt("What is the name of Player One?", "Mr. X");
+        // const playerTwoName = prompt("What is Player Two's Name", "Ms. O")
+        let playerOneName = null;
+        let playerTwoName = null;
+        
+        let players = createPlayers(playerOneName, playerTwoName);
         console.log(`Welcome ${players[0].name} and ${players[1].name}`)
 
         let gameboard = Gameboard()
-        cells = createBoard(players, gameboard)
-
         let visuals = visualController(players, gameboard)
+        cells = createBoard(players, gameboard, visuals)
         visuals.displayPlayers(players)
 
         reset.addEventListener('click', function(e) {
