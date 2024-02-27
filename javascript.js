@@ -48,6 +48,7 @@ const Game = (function () {
     let activePlayer = null;
     let winner = null;
     let gameOver = false;
+    let score = [0, 0];
 
     const gameboardDiv = document.querySelector('#gameboard');
     const reset = document.querySelector("button")
@@ -99,6 +100,23 @@ const Game = (function () {
     };
 
     const newGame = function (players, gameboard) {
+
+        console.clear()
+
+        winner = checkWinner(players, gameboard)
+
+        if (!winner) {
+            console.log(score)
+        } else if (winner.name == players[0].name) {
+            score[0] += 1
+            console.log(score)
+        } else if (winner.name == players[1].name) {
+            score[1] += 1
+            console.log(score)
+        }
+
+        winner = null;
+
         gameboard.resetBoard()
         gameboard.printBoard()
         gameboardDiv.textContent = '';
@@ -119,10 +137,11 @@ const Game = (function () {
             }
         }
         // Check for tie
-        if (!board.includes("") && !winner) {
+        if (!board.includes('') && !winner) {
             gameOver = true;
             console.log("It's a tie!");
         }
+        return winner;
     }
     
     const createBoard = function (players, gameboard) {

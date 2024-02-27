@@ -2,6 +2,7 @@ body {
     background-color: rgb(75, 75, 75);
     display: flex;
     justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #gameboard {
@@ -26,4 +27,8 @@ body {
     outline: 1px solid;
     width: calc(650px/3);
     height: calc(650px/3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem;
 }
