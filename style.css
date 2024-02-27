@@ -1,0 +1,22 @@
+body {
+    background-color: rgb(75, 75, 75);
+    display: flex;
+    justify-content: center;
+}
+
+#gameboard {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    width: 650px;
+    height: 650px;
+    background-color: grey;
+}
+
+.cell {
+    background-color: green;
+    flex: 1;
+    outline: 1px solid;
+    width: calc(650px/3);
+    height: calc(650px/3);
+}
