@@ -76,9 +76,22 @@ function visualController(players, gameboard) {
         playerTwoName.querySelector('h2').textContent = players[1].name
     }
 
+    const updateStatus = function (players, activePlayer) {
+        const statusBox = document.querySelector('.status');
+
+        if (!activePlayer) {
+            statusBox.textContent = "Let's Play!"
+        } else if (activePlayer && !Game.getWinner()){
+            statusBox.textContent = `${activePlayer.name}'s Turn`
+        } else if (Game.getWinner()){
+            statusBox.textContent = `${Game.getWinner().name} wins!`
+        }
+    }
+
     return {
         updateScore,
-        displayPlayers
+        displayPlayers,
+        updateStatus
     }
 }
 
@@ -153,6 +166,7 @@ const Game = (function () {
         gameboard.printBoard()
         gameboardDiv.textContent = '';
         activePlayer = players[0]
+        visuals.updateStatus(players, activePlayer)
         createBoard(players, gameboard, visuals)
         gameOver = false;
     }
@@ -174,6 +188,7 @@ const Game = (function () {
             gameOver = true;
             console.log("It's a tie!");
         }
+        visuals.updateStatus(players, activePlayer)
         return winner;
     }
     
@@ -205,7 +220,7 @@ const Game = (function () {
         // const playerTwoName = prompt("What is Player Two's Name", "Ms. O")
         let playerOneName = null;
         let playerTwoName = null;
-        
+
         let players = createPlayers(playerOneName, playerTwoName);
         console.log(`Welcome ${players[0].name} and ${players[1].name}`)
 
