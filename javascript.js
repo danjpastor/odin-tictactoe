@@ -104,9 +104,12 @@ const Game = (function () {
     let score = [0, 0];
 
     const gameboardDiv = document.querySelector('#gameboard');
-    const reset = document.querySelector("button.reset")
-    const play = document.querySelector(".newGame")
-    const container = document.querySelector(".container")
+    const reset = document.querySelector(".reset");
+    const play = document.querySelector(".newGame");
+    const container = document.querySelector("#main");
+    const rightPane = document.querySelector('.rightPane');
+    const blackout = document.querySelector('.blackout');
+
 
     const createPlayers = function (playerOneName, playerTwoName) {
 
@@ -164,6 +167,8 @@ const Game = (function () {
 
     const newGame = function (players, gameboard, visuals) {
         reset.classList.add('hidden')
+        blackout.classList.add("hidden")
+
         console.clear()
         winner = null;
 
@@ -187,6 +192,7 @@ const Game = (function () {
                 console.log(`Congratulations! ${winner.name} wins!`);
                 visuals.updateScore(players)
                 reset.classList.remove('hidden')
+                blackout.classList.remove("hidden")
             }
         }
         // Check for tie
@@ -195,6 +201,7 @@ const Game = (function () {
             gameOver = true;
             console.log("It's a tie!");
             reset.classList.remove('hidden')
+            blackout.classList.remove("hidden")
         }
         visuals.updateStatus(players, activePlayer, gameboard)
         return winner;
@@ -226,6 +233,7 @@ const Game = (function () {
     const playGame = function () {
         play.addEventListener('click', function(e) {
             container.classList.remove("hidden")
+            rightPane.classList.remove("hidden")
             play.classList.add("hidden")
 
             // const playerOneName = prompt("What is the name of Player One?", "Mr. X");
