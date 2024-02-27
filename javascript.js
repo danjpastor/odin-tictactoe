@@ -74,20 +74,22 @@ function visualController(players, gameboard, score) {
     }
 
     const updateStatus = function (players, activePlayer, gameboard) {
-        const statusBox = document.querySelector('.status');
+        const statusBox = document.querySelectorAll('.status');
         const board = gameboard.getBoard();
 
-        if (!board.includes('') && !Game.getWinner()) {
-            statusBox.textContent = `It's a Tie!`
-        }
-
-        if (!activePlayer && board.includes('')) {
-            statusBox.textContent = "Let's Play!"
-        } else if (activePlayer && !Game.getWinner()){
-            statusBox.textContent = `${activePlayer.name}'s Turn`
-        } else if (Game.getWinner()){
-            statusBox.textContent = `${Game.getWinner().name} wins!`
-        }
+        statusBox.forEach((stat) => {
+            if (!board.includes('') && !Game.getWinner()) {
+                stat.textContent = `It's a Tie!`
+            }
+    
+            if (!activePlayer && board.includes('')) {
+                stat.textContent = "Let's Play!"
+            } else if (activePlayer && !Game.getWinner()){
+                stat.textContent = `${activePlayer.name}'s Turn`
+            } else if (Game.getWinner()){
+                stat.textContent = `${Game.getWinner().name} wins!`
+            }
+        })
     }
 
     return {
@@ -168,6 +170,7 @@ const Game = (function () {
     const newGame = function (players, gameboard, visuals) {
         reset.classList.add('hidden')
         blackout.classList.add("hidden")
+        blackout.style.cssText = "display: none";
 
         console.clear()
         winner = null;
@@ -193,6 +196,7 @@ const Game = (function () {
                 visuals.updateScore(players)
                 reset.classList.remove('hidden')
                 blackout.classList.remove("hidden")
+                blackout.style.cssText = "display: flex;";
             }
         }
         // Check for tie
@@ -202,6 +206,7 @@ const Game = (function () {
             console.log("It's a tie!");
             reset.classList.remove('hidden')
             blackout.classList.remove("hidden")
+            blackout.style.cssText = "display: flex;";
         }
         visuals.updateStatus(players, activePlayer, gameboard)
         return winner;
