@@ -44,11 +44,48 @@ function Gameboard() {
     }
 }
 
+function visualController(players, gameboard) {
+    const scoreboard = document.querySelector('#scoreboard')
+    const playerOneScore = document.querySelector('.playerOneScore')
+    const playerTwoScore = document.querySelector('.playerTwoScore')
+    
+    let score = [0, 0];
+
+    const updateScore = function (players) {
+        let winner = Game.getWinner()
+
+        if (!winner) {
+            console.log(score)
+        } else if (winner.name == players[0].name) {
+            score[0] += 1
+            console.log(score)
+        } else if (winner.name == players[1].name) {
+            score[1] += 1
+            console.log(score)
+        }
+        
+        playerOneScore.querySelector(".score").textContent = score[0]
+        playerTwoScore.querySelector(".score").textContent = score[1]
+    }
+
+    const displayPlayers = function (players) {
+        const playerOneName = document.querySelector(".playerOneName");
+        const playerTwoName = document.querySelector(".playerTwoName");
+
+        playerOneName.querySelector('h2').textContent = players[0].name
+        playerTwoName.querySelector('h2').textContent = players[1].name
+    }
+
+    return {
+        updateScore,
+        displayPlayers
+    }
+}
+
 const Game = (function () {
     let activePlayer = null;
     let winner = null;
     let gameOver = false;
-    let score = [0, 0];
 
     const gameboardDiv = document.querySelector('#gameboard');
     const reset = document.querySelector("button")
@@ -99,22 +136,11 @@ const Game = (function () {
         }
     };
 
-    const newGame = function (players, gameboard) {
+    const newGame = function (players, gameboard, visuals) {
 
         console.clear()
 
-        winner = checkWinner(players, gameboard)
-
-        if (!winner) {
-            console.log(score)
-        } else if (winner.name == players[0].name) {
-            score[0] += 1
-            console.log(score)
-        } else if (winner.name == players[1].name) {
-            score[1] += 1
-            console.log(score)
-        }
-
+        visuals.updateScore(players, gameboard)
         winner = null;
 
         gameboard.resetBoard()
@@ -176,9 +202,16 @@ const Game = (function () {
         let gameboard = Gameboard()
         cells = createBoard(players, gameboard)
 
+        let visuals = visualController(players, gameboard)
+        visuals.displayPlayers(players)
+
         reset.addEventListener('click', function(e) {
-            newGame(players, gameboard)
+            newGame(players, gameboard, visuals)
         })
+    }
+
+    const getWinner = function () {
+        return winner
     }
 
     return {
@@ -189,7 +222,8 @@ const Game = (function () {
         changePlayer,
         createBoard,
         checkWinner,
-        newGame
+        newGame,
+        getWinner
     }
 
 })();

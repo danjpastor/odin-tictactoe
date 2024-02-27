@@ -32,3 +32,21 @@ body {
     align-items: center;
     font-size: 8rem;
 }
+
+#scoreboard {
+    display: flex;
+    width: 650px;
+    justify-content: space-between;
+
+}
+
+.playerOneScore, .playerTwoScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    padding: 0px;
+    margin: 0px;
+}
