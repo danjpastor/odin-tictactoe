@@ -111,6 +111,7 @@ const Game = (function () {
     const container = document.querySelector("#main");
     const rightPane = document.querySelector('.rightPane');
     const blackout = document.querySelector('.blackout');
+    const nameSelect = document.querySelector('.nameSelect')
 
 
     const createPlayers = function (playerOneName, playerTwoName) {
@@ -236,17 +237,25 @@ const Game = (function () {
     }
 
     const playGame = function () {
+
         play.addEventListener('click', function(e) {
+            const inputOne = document.querySelector('.inputOne').value
+            const inputTwo = document.querySelector('.inputTwo').value
+
             container.classList.remove("hidden")
             rightPane.classList.remove("hidden")
             play.classList.add("hidden")
+            nameSelect.classList.add('hidden')
+
 
             // const playerOneName = prompt("What is the name of Player One?", "Mr. X");
             // const playerTwoName = prompt("What is Player Two's Name", "Ms. O")
             let playerOneName = null;
             let playerTwoName = null;
 
-            let players = createPlayers(playerOneName, playerTwoName);
+            console.log(inputOne)
+
+            let players = createPlayers(inputOne, inputTwo);
             console.log(`Welcome ${players[0].name} and ${players[1].name}`)
 
             let gameboard = Gameboard()
